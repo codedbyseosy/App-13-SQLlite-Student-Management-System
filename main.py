@@ -6,17 +6,18 @@ from PyQt6.QtGui import QAction, QIcon
 import sys
 import sqlite3
 
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Student Management System")
         self.setMinimumSize(800, 600)
 
+        # Create menubar
         file_menu_item = self.menuBar().addMenu("&File")
         help_menu_item = self.menuBar().addMenu("&Help")
         edit_menu_item = self.menuBar().addMenu("&Edit")
 
+        # Create actions for the contenets of the menubar
         add_student_action = QAction(QIcon("/Users/eseoseodion/Documents/Python 2024/Visual Code/UDEMY_PROJECTS/app-13/icons/add.png"),
                                       "Add Student", self)
         add_student_action.triggered.connect(self.insert)
@@ -25,6 +26,7 @@ class MainWindow(QMainWindow):
         about_action = QAction("About", self)
         help_menu_item.addAction(about_action)
         about_action.setMenuRole(QAction.MenuRole.NoRole)
+        about_action.triggered.connect(self.about)
 
         search_action = QAction(QIcon("/Users/eseoseodion/Documents/Python 2024/Visual Code/UDEMY_PROJECTS/app-13/icons/search.png"),
                                 "Search", self)
@@ -78,21 +80,41 @@ class MainWindow(QMainWindow):
                 self.table.setItem(row_number, column_number, QTableWidgetItem(str(data)))
         connection.close()
 
+    # Create an insert dialog box
     def insert(self):
         dialog = InsertDialog()
         dialog.exec()
 
+   # Create a search dialog box
     def search(self):
         dialog = SearchDialog()
         dialog.exec()
 
+   # Create an edit dialog box
     def edit(self):
         dialog = EditDialog()
         dialog.exec()
 
+   # Create a delete dialog box
     def delete(self):
         dialog = DeleteDialog()
         dialog.exec()
+
+    # Create an about dialog box
+    def about(self):
+        dialog = AboutDialog()
+        dialog.exec()
+
+
+class AboutDialog(QMessageBox):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("About")
+        content = """
+        This app was created during the course. "The Python Mega Course".
+        Feel free to modify and reuse this app.
+        """
+        self.setText(content)
 
 
 class InsertDialog(QDialog):
